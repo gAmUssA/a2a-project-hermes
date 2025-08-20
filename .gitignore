@@ -1,0 +1,29 @@
+# Gradle build files
+.gradle/
+build/
+!a2a-web/build/libs/
+
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node modules (if any)
+node_modules/
+
+.env
+.claude/settings.local.json
