@@ -1,0 +1,47 @@
+# Development Environment Configuration
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          auto-create-topics: true
+
+# Development-specific logging
+logging:
+  level:
+    com.a2a.kafka: DEBUG
+    org.springframework.kafka: DEBUG
+    org.springframework.cloud.stream: DEBUG
+    org.apache.kafka: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Development OpenAI Configuration
+openai:
+  api-key: ${OPENAI_API_KEY:dev-api-key-placeholder}
+  model: gpt-3.5-turbo
+  temperature: 0.7
+  max-tokens: 1000
+
+# Development A2A Configuration
+a2a:
+  agents:
+    translator:
+      enabled: true
+    summarizer:
+      enabled: true
+    llm:
+      enabled: true
+  
+  orchestrator:
+    enabled: true
+    max-chain-length: 5
+    timeout-seconds: 120
+
+# Development server configuration
+server:
+  port: 8080

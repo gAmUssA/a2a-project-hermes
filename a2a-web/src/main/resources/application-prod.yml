@@ -1,0 +1,121 @@
+# Production Environment Configuration
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:a2a-agent-system-prod}
+      auto-offset-reset: ${KAFKA_AUTO_OFFSET_RESET:latest}
+      max-poll-records: ${KAFKA_MAX_POLL_RECORDS:500}
+      session-timeout-ms: ${KAFKA_SESSION_TIMEOUT:30000}
+      heartbeat-interval-ms: ${KAFKA_HEARTBEAT_INTERVAL:10000}
+    producer:
+      acks: ${KAFKA_PRODUCER_ACKS:all}
+      retries: ${KAFKA_PRODUCER_RETRIES:10}
+      batch-size: ${KAFKA_BATCH_SIZE:16384}
+      linger-ms: ${KAFKA_LINGER_MS:5}
+      buffer-memory: ${KAFKA_BUFFER_MEMORY:33554432}
+  
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS}
+          auto-create-topics: ${KAFKA_AUTO_CREATE_TOPICS:false}
+          consumer-properties:
+            max.poll.records: ${KAFKA_MAX_POLL_RECORDS:500}
+            session.timeout.ms: ${KAFKA_SESSION_TIMEOUT:30000}
+          producer-properties:
+            batch.size: ${KAFKA_BATCH_SIZE:16384}
+            linger.ms: ${KAFKA_LINGER_MS:5}
+    schema:
+      registry:
+        client:
+          endpoint: ${SCHEMA_REGISTRY_URL}
+
+# Production logging - minimal and structured
+logging:
+  level:
+    com.a2a.kafka: ${LOG_LEVEL_A2A:INFO}
+    org.springframework.kafka: ${LOG_LEVEL_KAFKA:WARN}
+    org.springframework.cloud.stream: ${LOG_LEVEL_STREAM:WARN}
+    org.apache.kafka: ${LOG_LEVEL_APACHE_KAFKA:WARN}
+    org.springframework.security: ${LOG_LEVEL_SECURITY:WARN}
+    root: ${LOG_LEVEL_ROOT:INFO}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  file:
+    name: ${LOG_FILE_PATH:/app/logs/a2a-kafka-agent.log}
+    max-size: ${LOG_FILE_MAX_SIZE:100MB}
+    max-history: ${LOG_FILE_MAX_HISTORY:30}
+
+# Production OpenAI Configuration
+openai:
+  api-key: ${OPENAI_API_KEY}
+  model: ${OPENAI_MODEL:gpt-3.5-turbo}
+  temperature: ${OPENAI_TEMPERATURE:0.7}
+  max-tokens: ${OPENAI_MAX_TOKENS:1000}
+  timeout: ${OPENAI_TIMEOUT:30s}
+  max-retries: ${OPENAI_MAX_RETRIES:3}
+
+# Production A2A Configuration
+a2a:
+  system:
+    name: ${A2A_SYSTEM_NAME:A2A Kafka Agent System}
+    version: ${A2A_SYSTEM_VERSION:1.0.0-SNAPSHOT}
+  
+  agents:
+    translator:
+      enabled: ${A2A_TRANSLATOR_ENABLED:true}
+      max-concurrent: ${A2A_TRANSLATOR_MAX_CONCURRENT:10}
+    summarizer:
+      enabled: ${A2A_SUMMARIZER_ENABLED:true}
+      max-concurrent: ${A2A_SUMMARIZER_MAX_CONCURRENT:10}
+    llm:
+      enabled: ${A2A_LLM_ENABLED:true}
+      max-concurrent: ${A2A_LLM_MAX_CONCURRENT:10}
+  
+  orchestrator:
+    enabled: ${A2A_ORCHESTRATOR_ENABLED:true}
+    max-chain-length: ${A2A_MAX_CHAIN_LENGTH:10}
+    timeout-seconds: ${A2A_TIMEOUT_SECONDS:300}
+    max-concurrent-workflows: ${A2A_MAX_CONCURRENT_WORKFLOWS:50}
+
+# Production server configuration
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/api}
+  tomcat:
+    threads:
+      max: ${SERVER_TOMCAT_MAX_THREADS:200}
+      min-spare: ${SERVER_TOMCAT_MIN_SPARE_THREADS:10}
+    connection-timeout: ${SERVER_TOMCAT_CONNECTION_TIMEOUT:20000}
+
+# Production management configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS:health,info,metrics,prometheus}
+      base-path: ${MANAGEMENT_BASE_PATH:/actuator}
+  endpoint:
+    health:
+      show-details: ${MANAGEMENT_HEALTH_SHOW_DETAILS:when-authorized}
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      environment: production
+      instance: ${HOSTNAME:unknown}
+  tracing:
+    sampling:
+      probability: ${TRACING_SAMPLING_PROBABILITY:0.1}
+
+# Production security configuration
+spring.security:
+  user:
+    name: ${SECURITY_USER_NAME:admin}
+    password: ${SECURITY_USER_PASSWORD}
+    roles: ${SECURITY_USER_ROLES:ADMIN,ACTUATOR}

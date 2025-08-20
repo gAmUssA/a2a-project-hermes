@@ -1,0 +1,38 @@
+ext {
+  springAiVersion = "1.0.1"
+}
+dependencies {
+    // Core module dependency
+    implementation project(':a2a-core')
+    
+    // Spring AI for LLM operations - TODO: Add when Spring AI 1.0.1 is available
+    // implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+    // implementation 'org.springframework.ai:spring-ai-spring-boot-starter'
+    
+    // Spring Cloud Stream for messaging
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    
+    // Web for REST endpoints
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Additional utilities
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.apache.commons:commons-text:1.11.0'
+  implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+}
+
+// This is a library module, not an executable
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.ai:spring-ai-bom:$springAiVersion"
+  }
+}

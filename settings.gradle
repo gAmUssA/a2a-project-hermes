@@ -1,0 +1,14 @@
+rootProject.name = 'a2a-kafka-agent-system'
+
+include 'a2a-core'
+include 'a2a-agents'
+include 'a2a-orchestrator'
+include 'a2a-monitoring'
+include 'a2a-web'
+
+// Module descriptions
+project(':a2a-core').projectDir = file('a2a-core')
+project(':a2a-agents').projectDir = file('a2a-agents')
+project(':a2a-orchestrator').projectDir = file('a2a-orchestrator')
+project(':a2a-monitoring').projectDir = file('a2a-monitoring')
+project(':a2a-web').projectDir = file('a2a-web')

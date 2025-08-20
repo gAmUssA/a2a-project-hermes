@@ -1,0 +1,110 @@
+spring:
+  application:
+    name: a2a-kafka-agent-system
+  
+  profiles:
+    active: dev
+  
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: a2a-agent-system
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  
+  # Spring Cloud Stream Configuration
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          auto-create-topics: true
+      bindings:
+        # A2A Task Processing
+        processAgentTasks-in-0:
+          destination: a2a.tasks
+          group: a2a-agent-processors
+        processAgentTasks-out-0:
+          destination: a2a.replies
+        
+        # Event Streaming
+        agentEvents-in-0:
+          destination: a2a.events
+          group: a2a-event-consumers
+        
+        # Registry Updates
+        registryUpdates-out-0:
+          destination: a2a.registry
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# Management and Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# A2A System Configuration
+a2a:
+  system:
+    name: "A2A Kafka Agent System"
+    version: "1.0.0-SNAPSHOT"
+  
+  # Topic Configuration
+  topics:
+    tasks: "a2a.tasks"
+    replies: "a2a.replies"
+    events: "a2a.events"
+    registry: "a2a.registry"
+  
+  # Agent Configuration
+  agents:
+    translator:
+      enabled: true
+    summarizer:
+      enabled: true
+    llm:
+      enabled: true
+  
+  # Orchestrator Configuration
+  orchestrator:
+    enabled: true
+    max-chain-length: 10
+    timeout-seconds: 300
+
+# OpenAI Configuration (will be overridden by environment variables)
+openai:
+  api-key: ${OPENAI_API_KEY:your-api-key-here}
+  model: gpt-3.5-turbo
+  temperature: 0.7
+  max-tokens: 1000
+
+# Logging Configuration
+logging:
+  level:
+    com.a2a.kafka: DEBUG
+    org.springframework.kafka: INFO
+    org.springframework.cloud.stream: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

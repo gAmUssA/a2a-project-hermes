@@ -1,0 +1,36 @@
+# Gradle build files
+.gradle/
+build/
+!a2a-web/build/libs/
+
+# Git
+.git/
+.gitignore
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Documentation
+docs/
+README.md
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node modules (if any)
+node_modules/
+
+# Test files
+**/src/test/

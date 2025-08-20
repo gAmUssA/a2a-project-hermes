@@ -1,0 +1,76 @@
+# Test Environment Configuration
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: a2a-agent-system-test
+      auto-offset-reset: earliest
+    producer:
+      acks: all
+      retries: 3
+  
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          auto-create-topics: true
+          consumer-properties:
+            max.poll.records: 10
+          producer-properties:
+            batch.size: 1024
+
+# Test-specific logging
+logging:
+  level:
+    com.a2a.kafka: DEBUG
+    org.springframework.kafka: DEBUG
+    org.springframework.cloud.stream: DEBUG
+    org.apache.kafka: INFO
+    org.springframework.test: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Test OpenAI Configuration (using mock or test keys)
+openai:
+  api-key: ${OPENAI_API_KEY:test-api-key}
+  model: gpt-3.5-turbo
+  temperature: 0.0  # Deterministic for testing
+  max-tokens: 100   # Smaller for faster tests
+
+# Test A2A Configuration
+a2a:
+  system:
+    name: "A2A Kafka Agent System - Test"
+    version: "1.0.0-SNAPSHOT"
+  
+  agents:
+    translator:
+      enabled: true
+    summarizer:
+      enabled: true
+    llm:
+      enabled: true
+  
+  orchestrator:
+    enabled: true
+    max-chain-length: 3    # Smaller for tests
+    timeout-seconds: 30    # Shorter timeout for tests
+
+# Test server configuration
+server:
+  port: 0  # Random port for tests
+
+# Test management configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      environment: test

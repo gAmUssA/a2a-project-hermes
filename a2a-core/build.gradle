@@ -1,0 +1,40 @@
+dependencies {
+    // A2A Protocol Integration - Available in local .m2 repository
+    implementation 'io.github.a2asdk:a2a-java-sdk-client:0.3.0.Beta1-SNAPSHOT'
+    implementation 'io.github.a2asdk:a2a-java-sdk-common:0.3.0.Beta1-SNAPSHOT'
+    implementation 'io.github.a2asdk:a2a-java-sdk-spec:0.3.0.Beta1-SNAPSHOT'
+    
+    // Spring Cloud Stream for Kafka
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    
+    // Kafka clients
+    implementation 'org.apache.kafka:kafka-clients'
+    implementation 'org.springframework.kafka:spring-kafka'
+    
+    // JSON processing
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    
+    // Configuration properties
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // Test dependencies
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.testcontainers:kafka'
+    testImplementation 'org.testcontainers:junit-jupiter'
+}
+
+// This is a library module, not an executable
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}

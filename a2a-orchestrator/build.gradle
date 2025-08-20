@@ -1,0 +1,32 @@
+dependencies {
+    // Core module dependency
+    implementation project(':a2a-core')
+    
+    // Spring Cloud Stream for messaging
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    
+    // Web for REST endpoints
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Circuit breaker and resilience
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+    
+    // Distributed tracing
+    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+    implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
+    
+    // State management
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+}
+
+// This is a library module, not an executable
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}

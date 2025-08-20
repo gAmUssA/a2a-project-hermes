@@ -1,0 +1,67 @@
+# Docker Environment Configuration
+spring:
+  kafka:
+    bootstrap-servers: kafka:29092
+  
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: kafka:29092
+          auto-create-topics: true
+    schema:
+      registry:
+        client:
+          endpoint: http://schema-registry:8081
+
+# Docker-specific logging
+logging:
+  level:
+    com.a2a.kafka: INFO
+    org.springframework.kafka: INFO
+    org.springframework.cloud.stream: INFO
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Docker OpenAI Configuration
+openai:
+  api-key: ${OPENAI_API_KEY}
+  model: ${OPENAI_MODEL:gpt-3.5-turbo}
+  temperature: ${OPENAI_TEMPERATURE:0.7}
+  max-tokens: ${OPENAI_MAX_TOKENS:1000}
+
+# Docker A2A Configuration
+a2a:
+  agents:
+    translator:
+      enabled: ${A2A_TRANSLATOR_ENABLED:true}
+    summarizer:
+      enabled: ${A2A_SUMMARIZER_ENABLED:true}
+    llm:
+      enabled: ${A2A_LLM_ENABLED:true}
+  
+  orchestrator:
+    enabled: ${A2A_ORCHESTRATOR_ENABLED:true}
+    max-chain-length: ${A2A_MAX_CHAIN_LENGTH:10}
+    timeout-seconds: ${A2A_TIMEOUT_SECONDS:300}
+
+# Docker server configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# Management endpoints for Docker
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      environment: docker
