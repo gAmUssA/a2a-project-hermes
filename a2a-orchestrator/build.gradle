@@ -17,7 +17,6 @@ dependencies {
     implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
     
     // State management
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 

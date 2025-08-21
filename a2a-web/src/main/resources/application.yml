@@ -24,11 +24,19 @@ spring:
         binder:
           brokers: localhost:9092
           auto-create-topics: true
+        bindings:
+          processAgentTasks-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: a2a.tasks.dlq
+              ackMode: RECORD
       bindings:
         # A2A Task Processing
         processAgentTasks-in-0:
           destination: a2a.tasks
           group: a2a-agent-processors
+          consumer:
+            concurrency: 1
         processAgentTasks-out-0:
           destination: a2a.replies
         
@@ -38,8 +46,19 @@ spring:
           group: a2a-event-consumers
         
         # Registry Updates
+        registryUpdates-in-0:
+          destination: a2a.registry
+          group: a2a-registry
         registryUpdates-out-0:
           destination: a2a.registry
+
+  ai:
+    openai:
+      api-key: ${openai.api-key}
+      chat:
+        options:
+          model: ${openai.model}
+          temperature: ${openai.temperature}
 
 # Server Configuration
 server:
@@ -98,6 +117,7 @@ openai:
   model: gpt-3.5-turbo
   temperature: 0.7
   max-tokens: 1000
+
 
 # Logging Configuration
 logging:

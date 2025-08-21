@@ -61,6 +61,9 @@ management:
   endpoint:
     health:
       show-details: always
+  health:
+    redis:
+      enabled: false
   metrics:
     tags:
       application: ${spring.application.name}

@@ -36,36 +36,36 @@ This document contains a comprehensive task list for implementing the A2A Kafka 
 ## Phase 2: Core Agent Framework (Weeks 3-4)
 
 ### 2.1 Base Agent Architecture
-- [ ] 2.1.1 Create abstract agent base class with common functionality
-- [ ] 2.1.2 Implement agent lifecycle management (startup, shutdown)
-- [ ] 2.1.3 Create agent health check mechanisms
-- [ ] 2.1.4 Implement error handling and retry mechanisms
-- [ ] 2.1.5 Set up logging and audit trail implementation
-- [ ] 2.1.6 Create agent configuration management
+- [x] 2.1.1 Create abstract agent base class with common functionality
+- [x] 2.1.2 Implement agent lifecycle management (startup, shutdown)
+- [x] 2.1.3 Create agent health check mechanisms
+- [x] 2.1.4 Implement error handling and retry mechanisms
+- [x] 2.1.5 Set up logging and audit trail implementation
+- [x] 2.1.6 Create agent configuration management
 
 ### 2.2 Spring Cloud Stream Integration
-- [ ] 2.2.1 Configure Spring Cloud Stream functional bindings
-- [ ] 2.2.2 Implement message routing and processing pipelines
-- [ ] 2.2.3 Set up Dead Letter Queue (DLQ) implementation
-- [ ] 2.2.4 Configure consumer group management and scaling
-- [ ] 2.2.5 Implement message acknowledgment strategies
-- [ ] 2.2.6 Create integration tests for Stream functionality
+- [x] 2.2.1 Configure Spring Cloud Stream functional bindings
+- [x] 2.2.2 Implement message routing and processing pipelines
+- [x] 2.2.3 Set up Dead Letter Queue (DLQ) implementation
+- [x] 2.2.4 Configure consumer group management and scaling
+- [x] 2.2.5 Implement message acknowledgment strategies
+- [x] 2.2.6 Create integration tests for Stream functionality
 
 ### 2.3 Spring AI ChatClient Integration
-- [ ] 2.3.1 Configure Spring AI 1.0.1 dependency
-- [ ] 2.3.2 Set up ChatClient configuration and bean setup
-- [ ] 2.3.3 Create prompt template management system
-- [ ] 2.3.4 Implement model configuration and switching capabilities
-- [ ] 2.3.5 Handle token limit management and optimization
-- [ ] 2.3.6 Create ChatClient wrapper with retry logic
+- [x] 2.3.1 Configure Spring AI 1.0.1 dependency
+- [x] 2.3.2 Set up ChatClient configuration and bean setup
+- [x] 2.3.3 Create prompt template management system
+- [x] 2.3.4 Implement model configuration and switching capabilities
+- [x] 2.3.5 Handle token limit management and optimization
+- [x] 2.3.6 Create ChatClient wrapper with retry logic
 
 ### 2.4 Agent Registry Service
-- [ ] 2.4.1 Set up registry topic with compaction configuration
-- [ ] 2.4.2 Implement agent metadata publishing mechanism
-- [ ] 2.4.3 Create agent capability update functionality
-- [ ] 2.4.4 Implement capability discovery mechanisms
-- [ ] 2.4.5 Create registry query APIs
-- [ ] 2.4.6 Write tests for registry functionality
+- [x] 2.4.1 Set up registry topic with compaction configuration
+- [x] 2.4.2 Implement agent metadata publishing mechanism
+- [x] 2.4.3 Create agent capability update functionality
+- [x] 2.4.4 Implement capability discovery mechanisms
+- [x] 2.4.5 Create registry query APIs
+- [x] 2.4.6 Write tests for registry functionality
 
 ## Phase 3: Specialized Agent Implementation (Weeks 5-7)
 

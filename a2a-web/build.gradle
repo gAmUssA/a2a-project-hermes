@@ -6,18 +6,7 @@ dependencies {
     implementation project(':a2a-monitoring')
     
     // Web and REST API
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    
-    // API documentation
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-    
-    // Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    
-    // Static resources and templates
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    
     // Health checks and monitoring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     

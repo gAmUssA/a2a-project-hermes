@@ -1,13 +1,13 @@
 # Development Environment Configuration
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:29092
   
   cloud:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: localhost:29092
           auto-create-topics: true
 
 # Development-specific logging
@@ -44,4 +44,4 @@ a2a:
 
 # Development server configuration
 server:
-  port: 8080
+  port: 9090

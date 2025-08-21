@@ -3,7 +3,6 @@
 build/
 !a2a-web/build/libs/
 
-
 # IDE files
 .idea/
 *.iml
