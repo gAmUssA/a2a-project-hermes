@@ -272,3 +272,13 @@ This plan outlines the strategic approach for implementing a production-ready Sp
 This improvement plan provides a structured approach to building a production-ready A2A Kafka agent system. The phased implementation ensures that critical infrastructure is established first, followed by core functionality, and finally advanced features. The emphasis on observability, testing, and operational excellence will result in a maintainable and scalable system that meets all specified requirements.
 
 The plan balances technical excellence with practical delivery timelines, ensuring that each phase delivers tangible value while building toward the complete vision outlined in the requirements document.
+
+## Standalone Agent Validation Quick Guide
+
+For instructions on running and validating agents without Kafka or the orchestrator, see:
+- docs/agents-standalone.md
+
+This guide covers:
+- Running unit tests for Translator, Summarizer, and GeneralPurpose agents
+- JShell examples with a stubbed ChatServiceClient
+- Optional live validation via Spring AI with real OpenAI credentials

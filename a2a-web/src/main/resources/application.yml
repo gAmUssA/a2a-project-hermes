@@ -59,6 +59,8 @@ spring:
         options:
           model: ${openai.model}
           temperature: ${openai.temperature}
+  webflux:
+    base-path: /api
 
 # Server Configuration
 server:
@@ -78,6 +80,8 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+  tracing:
+    enabled: false
   prometheus:
     metrics:
       export:

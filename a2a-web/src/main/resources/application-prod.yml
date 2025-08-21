@@ -110,6 +110,7 @@ management:
       environment: production
       instance: ${HOSTNAME:unknown}
   tracing:
+    enabled: false
     sampling:
       probability: ${TRACING_SAMPLING_PROBABILITY:0.1}
 

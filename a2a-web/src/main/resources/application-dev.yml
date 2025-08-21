@@ -23,7 +23,7 @@ logging:
 # Development OpenAI Configuration
 openai:
   api-key: ${OPENAI_API_KEY:dev-api-key-placeholder}
-  model: gpt-3.5-turbo
+  model: gpt-4o
   temperature: 0.7
   max-tokens: 1000
 
@@ -45,3 +45,8 @@ a2a:
 # Development server configuration
 server:
   port: 9090
+
+# Management (explicitly disable tracing/exporters)
+management:
+  tracing:
+    enabled: false

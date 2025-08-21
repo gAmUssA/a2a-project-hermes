@@ -36,9 +36,13 @@ public class AgentRegistryService {
                 .setHeader("contentType", "application/json")
                 .setHeader("kafka_messageKey", agentName.getBytes(StandardCharsets.UTF_8))
                 .build();
-        boolean sent = streamBridge.send("registryUpdates-out-0", message);
-        if (!sent) {
-            log.warn("Failed to send registry metadata for agent {}", agentName);
+        try {
+            boolean sent = streamBridge.send("registryUpdates-out-0", message);
+            if (!sent) {
+                log.warn("Failed to send registry metadata for agent {} (send returned false)", agentName);
+            }
+        } catch (Exception ex) {
+            log.warn("Failed to send registry metadata for agent {}: {}", agentName, ex.toString());
         }
     }
 
@@ -46,6 +50,12 @@ public class AgentRegistryService {
         // For now treat capabilities as metadata key "capabilities"
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("capabilities", capabilities == null ? Map.of() : capabilities);
+        publishMetadata(agentName, metadata);
+    }
+
+    public void updateAgentCard(String agentName, Map<String, Object> agentCard) {
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("agentCard", agentCard == null ? Map.of() : agentCard);
         publishMetadata(agentName, metadata);
     }
 }

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A2A Agents Test UI</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+    h1 { margin-bottom: 0.5rem; }
+    section { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; }
+    label { display: block; font-weight: 600; margin: 0.5rem 0 0.25rem; }
+    input[type="text"], textarea { width: 100%; padding: 0.5rem; border: 1px solid #bbb; border-radius: 6px; }
+    button { margin-top: 0.5rem; padding: 0.5rem 1rem; border: 0; background: #1166ee; color: #fff; border-radius: 6px; cursor: pointer; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    pre { background: #f7f7f7; padding: 0.75rem; border-radius: 6px; overflow-x: auto; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <h1>A2A Agents Test UI</h1>
+  <p>Use this page to quickly test Translator, Summarizer, and General Purpose agents via simple REST endpoints.</p>
+  <p>Note: If the app is running with base path "/api", these buttons call /api/test/* endpoints.</p>
+
+  <section>
+    <h2>Health Check</h2>
+    <button id="pingBtn">Ping</button>
+    <pre id="pingOut">Click Ping to test...</pre>
+  </section>
+
+  <div class="row">
+    <section>
+      <h2>Translator</h2>
+      <label for="trText">Text</label>
+      <textarea id="trText" rows="4">Hello world</textarea>
+      <label for="trLang">Target language (en, es, de, fr, ru, zh)</label>
+      <input type="text" id="trLang" value="es" />
+      <button id="trBtn">Translate</button>
+      <pre id="trOut">Awaiting input...</pre>
+    </section>
+
+    <section>
+      <h2>Summarizer</h2>
+      <label for="sumText">Text</label>
+      <textarea id="sumText" rows="4">This is some sufficiently long content to be summarized by the agent. It should produce a concise summary.</textarea>
+      <label for="sumHint">Length hint (short|medium|long)</label>
+      <input type="text" id="sumHint" value="short" />
+      <button id="sumBtn">Summarize</button>
+      <pre id="sumOut">Awaiting input...</pre>
+    </section>
+  </div>
+
+  <section>
+    <h2>General Purpose</h2>
+    <label for="gpText">Text</label>
+    <textarea id="gpText" rows="4">Provide a safe and concise response.</textarea>
+    <div class="row">
+      <div>
+        <label for="gpMaxTok">Max tokens (optional)</label>
+        <input type="text" id="gpMaxTok" placeholder="e.g., 256" />
+      </div>
+      <div>
+        <label for="gpTemp">Temperature (optional)</label>
+        <input type="text" id="gpTemp" placeholder="e.g., 0.7" />
+      </div>
+    </div>
+    <button id="gpBtn">Send</button>
+    <pre id="gpOut">Awaiting input...</pre>
+  </section>
+
+  <script>
+    const base = '/api'; // adjust if needed
+
+    function jsonOut(el, obj) {
+      el.textContent = JSON.stringify(obj, null, 2);
+    }
+
+    function toNumberOrNull(v) {
+      if (v === undefined || v === null || v === '') return null;
+      const n = Number(v);
+      return Number.isNaN(n) ? null : n;
+    }
+
+    document.getElementById('pingBtn').addEventListener('click', async () => {
+      const out = document.getElementById('pingOut');
+      out.textContent = 'Loading...';
+      try {
+        const res = await fetch(`${base}/test/ping`);
+        jsonOut(out, await res.json());
+      } catch (e) {
+        out.textContent = String(e);
+      }
+    });
+
+    document.getElementById('trBtn').addEventListener('click', async () => {
+      const text = document.getElementById('trText').value;
+      const targetLanguage = document.getElementById('trLang').value;
+      const out = document.getElementById('trOut');
+      out.textContent = 'Loading...';
+      try {
+        const res = await fetch(`${base}/test/translate`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, targetLanguage })
+        });
+        jsonOut(out, await res.json());
+      } catch (e) {
+        out.textContent = String(e);
+      }
+    });
+
+    document.getElementById('sumBtn').addEventListener('click', async () => {
+      const text = document.getElementById('sumText').value;
+      const lengthHint = document.getElementById('sumHint').value;
+      const out = document.getElementById('sumOut');
+      out.textContent = 'Loading...';
+      try {
+        const res = await fetch(`${base}/test/summarize`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, lengthHint })
+        });
+        jsonOut(out, await res.json());
+      } catch (e) {
+        out.textContent = String(e);
+      }
+    });
+
+    document.getElementById('gpBtn').addEventListener('click', async () => {
+      const text = document.getElementById('gpText').value;
+      const maxTokens = toNumberOrNull(document.getElementById('gpMaxTok').value);
+      const temperature = toNumberOrNull(document.getElementById('gpTemp').value);
+      const out = document.getElementById('gpOut');
+      out.textContent = 'Loading...';
+      try {
+        const res = await fetch(`${base}/test/gp`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, maxTokens, temperature })
+        });
+        jsonOut(out, await res.json());
+      } catch (e) {
+        out.textContent = String(e);
+      }
+    });
+  </script>
+</body>
+</html>

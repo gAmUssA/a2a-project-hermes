@@ -74,3 +74,5 @@ management:
     tags:
       application: ${spring.application.name}
       environment: test
+  tracing:
+    enabled: false

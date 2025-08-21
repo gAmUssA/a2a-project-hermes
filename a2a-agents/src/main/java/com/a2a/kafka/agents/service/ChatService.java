@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class ChatService {
+public class ChatService implements ChatServiceClient {
 
     private static final Logger log = LoggerFactory.getLogger(ChatService.class);
 
@@ -27,10 +27,12 @@ public class ChatService {
         this.openAIProperties = openAIProperties;
     }
 
+    @Override
     public String chat(String templateName, Map<String, Object> variables) {
         return chat(templateName, variables, null, null, null);
     }
 
+    @Override
     public String chat(String templateName, Map<String, Object> variables, String modelOverride, Double temperatureOverride, Integer maxTokensOverride) {
         Objects.requireNonNull(templateName, "templateName");
         String prompt = templates.render(templateName, variables);

@@ -68,3 +68,5 @@ management:
     tags:
       application: ${spring.application.name}
       environment: docker
+  tracing:
+    enabled: false
