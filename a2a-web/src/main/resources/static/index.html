@@ -14,6 +14,8 @@
     button:disabled { background: #ccc; cursor: not-allowed; }
     pre { background: #f7f7f7; padding: 0.75rem; border-radius: 6px; overflow-x: auto; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .card { border: 1px solid #e5e5e5; padding: 0.75rem; border-radius: 6px; margin: 0.5rem 0; }
+    .muted { color: #666; font-size: 0.9em; }
     @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -26,6 +28,13 @@
     <h2>Health Check</h2>
     <button id="pingBtn">Ping</button>
     <pre id="pingOut">Click Ping to test...</pre>
+  </section>
+
+  <section>
+    <h2>Agent Registry</h2>
+    <button id="regRefresh">Refresh Registry</button>
+    <pre id="regOut">Click Refresh to load...</pre>
+    <div id="regList"></div>
   </section>
 
   <div class="row">
@@ -81,12 +90,58 @@
       return Number.isNaN(n) ? null : n;
     }
 
+    function renderRegistry(entries) {
+      const container = document.getElementById('regList');
+      if (!Array.isArray(entries)) {
+        container.innerHTML = '<div class="muted">No entries</div>';
+        return;
+      }
+      if (entries.length === 0) {
+        container.innerHTML = '<div class="muted">Registry is empty.</div>';
+        return;
+      }
+      container.innerHTML = entries.map(e => {
+        const name = e.agentName || e.name || 'unknown';
+        const updated = e.updatedAt || '';
+        const md = e.metadata || {};
+        const caps = md.capabilities || {};
+        const card = md.agentCard || {};
+        const cardCaps = card.capabilities || {};
+        const skills = Array.isArray(card.skills) ? card.skills.map(s => s.name || s.id).join(', ') : '';
+        return `
+          <div class="card">
+            <h3>${name}</h3>
+            <div class="muted">updatedAt: ${updated}</div>
+            <div><strong>Capabilities:</strong> ${Object.keys(caps).length ? Object.entries(caps).map(([k,v])=>k+': '+v).join(', ') : 'n/a'}</div>
+            <div><strong>AgentCard.streaming:</strong> ${cardCaps.streaming !== undefined ? cardCaps.streaming : 'n/a'}</div>
+            <div><strong>AgentCard.skills:</strong> ${skills || 'n/a'}</div>
+            <details>
+              <summary>Raw metadata</summary>
+              <pre>${JSON.stringify(md, null, 2)}</pre>
+            </details>
+          </div>`;
+      }).join('');
+    }
+
     document.getElementById('pingBtn').addEventListener('click', async () => {
       const out = document.getElementById('pingOut');
       out.textContent = 'Loading...';
       try {
         const res = await fetch(`${base}/test/ping`);
         jsonOut(out, await res.json());
+      } catch (e) {
+        out.textContent = String(e);
+      }
+    });
+
+    document.getElementById('regRefresh').addEventListener('click', async () => {
+      const out = document.getElementById('regOut');
+      out.textContent = 'Loading...';
+      try {
+        const res = await fetch(`${base}/registry`);
+        const data = await res.json();
+        jsonOut(out, { count: Array.isArray(data) ? data.length : 0 });
+        renderRegistry(data);
       } catch (e) {
         out.textContent = String(e);
       }
